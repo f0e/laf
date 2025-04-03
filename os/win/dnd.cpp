@@ -390,7 +390,8 @@ STDMETHODIMP DragTargetAdapter::DragLeave(void)
   if (!m_window->hasDragTarget())
     return E_NOTIMPL;
 
-  DragEvent ev = newDragEvent(nullptr, DROPEFFECT_NONE);
+  DWORD emptyEffect = DROPEFFECT_NONE; // IDK
+  DragEvent ev = newDragEvent(nullptr, &emptyEffect);
   m_window->notifyDragLeave(ev);
   m_data.reset();
   return S_OK;
