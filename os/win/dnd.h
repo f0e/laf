@@ -55,6 +55,7 @@ public:
 
 private:
   DragEvent newDragEvent(POINTL* pt, DWORD* pdwEffect);
+  DragEvent newDragEvent();
 
   ULONG m_ref = 0;
   Window* m_window = nullptr;

@@ -356,6 +356,13 @@ DragEvent DragTargetAdapter::newDragEvent(POINTL* pt, DWORD* pdwEffect)
   return DragEvent(m_window, as_dropoperation(*pdwEffect), m_position, ddProvider);
 }
 
+DragEvent DragTargetAdapter::newDragEvent()
+{
+  std::unique_ptr<DragDataProvider> ddProvider = std::make_unique<DragDataProviderWin>(
+    m_data.get());
+  return DragEvent(m_window, DropOperation::None, m_position, ddProvider);
+}
+
 STDMETHODIMP DragTargetAdapter::DragEnter(IDataObject* pDataObj,
                                           DWORD grfKeyState,
                                           POINTL pt,
@@ -390,8 +397,7 @@ STDMETHODIMP DragTargetAdapter::DragLeave(void)
   if (!m_window->hasDragTarget())
     return E_NOTIMPL;
 
-  DWORD emptyEffect = DROPEFFECT_NONE; // IDK
-  DragEvent ev = newDragEvent(nullptr, &emptyEffect);
+  DragEvent ev = newDragEvent();
   m_window->notifyDragLeave(ev);
   m_data.reset();
   return S_OK;
